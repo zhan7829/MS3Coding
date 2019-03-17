@@ -1,0 +1,36 @@
+README.txt
+
+MS3 Coding Challenge 
+1. add SQLite-JDBC jar file 
+- go to URL: https://bitbucket.org/xerial/sqlite-jdbc/downloads/ to download the Jar file
+- go back to eclipse and right click on your project name
+- go to Build Path< Configure Build Path< Libraries< Add External JARs
+- select the Jar file which you download from the above website 
+- click on Apply and Close 
+
+2. create Employee.java class
+- provide public setter and getter methods to access and update the value of variables
+
+3. create LoadcsvToSQLite.java class
+a) Specifiying Database Connection URLs->public static String JDBC_CONNECTION_URL = "jdbc:sqlite:testdb; create=true";
+I was unsuccessfully to complete this session since this is my first time to use eclipse connect to a SQLite database. However, I think the approaches I used here are correct.
+b) public static void main(String[] args) {}
+-inputs the csv file by using FileReader and BufferedReader
+-creates String arraylist to hold employee objects 
+-the csv file has 10 columns correspond with column reader, if the column has header will read the line and if header row does not exist will throw the FileNotFoundException
+-if bufferedReader has next line to read run the while loop and add the lines until nothing to read in the next line
+  -use comma as separator
+  -use length property to find out how many elements employee array has, if employee array length greater than 0 and equal to 10 create a new employeeInfo array,
+   in the employeeInfo[6] convert from String to Double and in the employeeInfo[7] and employeeInfo[8] convert from String to Boolean since employee array data type is String
+-else use increment operator to increase the wrongRecords variable by 1
+-throw FileNotFoundException and IOException to catch the error if it occurrs and print out the exception that occurred by using printStackTrace method
+-print out the statistics about the number of records received, successful and failed in part four 
+c) process SQL statement with JDBC in public static void LoadCSVintoDatabase(ArrayList<Employee> employeeList){} method
+-establishes a database connection with a corresponding JDBC driver->DriverManager.getConnection(JDBC_CONNECTION_URL);
+-creates an employee table if it does not exist 
+-if truncate table exist remove from employee table, truncate table is treated as drop table followed by create table
+-creates a PreparedStatement Object, uses a for-each loop to repeatedly set values in PreparedStatement objects and use executeUpdate method to update SQL statement
+-creates a statement object, execute statement object and generate ResultSet object
+-processing the ResultSet objects by using while loop, repeatedly calls the rs.next() method to move the cursor forward by one row, every time it calls next, the method outputs the data in the row where cursor is currently positioned 
+-JDBC throws an SQLException when it encounters an error during an interaction with a data source
+-Closing Connections by calling method stmt.close() to release the resourses it is using, when call this method, its ResultSet objects are closed 
